@@ -1,11 +1,8 @@
-<app-header (activeLink)="onActiveLink($event)"></app-header>
+<app-header></app-header>
 <div class="container">
   <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-md-12">
+      <router-outlet></router-outlet>
     </div>
-    <app-recipes
-      *ngIf="activatedLink === 'recipe'"></app-recipes>
-    <app-shopping-list
-      *ngIf="activatedLink === 'shopList'"></app-shopping-list>
   </div>
 </div>
