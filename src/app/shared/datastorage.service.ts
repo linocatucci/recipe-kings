@@ -3,35 +3,30 @@ import {Http, Response} from '@angular/http';
 import {RecipeService} from '../recipes/recipe.service';
 import {Recipe} from '../recipes/recipe.model';
 import {Observable} from 'rxjs/Observable';
+import {AuthService} from '../auth/auth.service';
 
 @Injectable()
 
 export class DatastorageService {
 
   constructor(private http: Http,
-              private recipeService: RecipeService) {
+              private recipeService: RecipeService,
+              private authService: AuthService) {
 
   }
 
-  firebaseURl = 'https://ng-recipe-book-5333d.firebaseio.com/recipes.json';
-  appName = 'https://ng-recipe-book-5333d.firebaseio.com/appName.json';
+  firebaseURl = 'https://ng-recipe-book-5333d.firebaseio.com/recipes.json?auth=';
+
+  // appName = 'https://ng-recipe-book-5333d.firebaseio.com/appName.json';
 
   saveRecipes() {
-    return this.http.put(this.firebaseURl, this.recipeService.getRecipes());
-  }
-
-  getAppName() {
-    return this.http.get(this.appName)
-      .map(
-        (response: Response) => {
-          const data = response.json();
-          return data;
-        }
-      );
+    const token = this.authService.getToken();
+    return this.http.put(this.firebaseURl + token, this.recipeService.getRecipes());
   }
 
   getRecipes() {
-    return this.http.get(this.firebaseURl)
+    const token = this.authService.getToken();
+    return this.http.get(this.firebaseURl + token)
       .map(
         (response: Response) => {
           const fetchedRecipes: Recipe[] = response.json();
@@ -53,5 +48,6 @@ export class DatastorageService {
         }
       );
   }
+
 }
 

@@ -3,6 +3,7 @@ import {Http, Response} from '@angular/http';
 import {RecipeService} from '../recipes/recipe.service';
 import {Recipe} from '../recipes/recipe.model';
 import {DatastorageService} from '../shared/datastorage.service';
+import {AuthService} from '../auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -11,10 +12,11 @@ import {DatastorageService} from '../shared/datastorage.service';
 export class HeaderComponent {
   constructor(private http: Http,
               private recipeService: RecipeService,
-              private dataStorageService: DatastorageService) {
+              private dataStorageService: DatastorageService,
+              private authService: AuthService) {
   }
 
-  appNameFireBase = this.dataStorageService.getAppName();
+  authenticated = false;
 
   onSaveRecipes() {
     this.dataStorageService.saveRecipes()
@@ -34,4 +36,12 @@ export class HeaderComponent {
     this.dataStorageService.getRecipes();
   }
 
+  isAuthenticated() {
+    this.authenticated = this.authService.isAuthenticated();
+    return this.authService.isAuthenticated();
+  }
+
+  onLogout() {
+    this.authService.logOut();
+  }
 }
